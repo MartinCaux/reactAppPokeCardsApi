@@ -1,21 +1,33 @@
 import React from 'react'
 import Result from './Result';
-import chien from './chien.jpg';
-import chat from './chat.jpg';
+import florizarre from './florizarre.png';
+import pikachu from './pikachu.png';
 
 class ResultsList extends React.Component {
     constructor(props) {
-        super()
+        super(props)
+        this.state = {
+            cards : []
+        }
     }
 
     render() {
         return(
             <ul>
-                <li><Result icone={chien} pokeName="Bulbizarre" pokeType="Plante" pokeGeneration="1ère génération" /></li>
-                <li><Result icone={chat} pokeName="Pikachu" pokeType="Electrik" pokeGeneration="1ère génération" /></li>
+                {this.state.cards != [] ? this.state.cards.map(element => (
+                        <Result name={element.name} url={element.imageUrl} description={element.text} />
+                    )) : null }    
             </ul>
         )
     }
+
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps)
+        this.setState({
+            cards:nextProps.cards.cards
+        })
+    }
+
 }
 
 export default ResultsList

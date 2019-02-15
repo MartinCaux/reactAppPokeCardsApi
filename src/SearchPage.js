@@ -3,16 +3,27 @@ import ResultsList from './ResultsList';
 
 class SearchPage extends React.Component {
     constructor(props) {
-        super()
+        super(props)
+        this.state = {
+            cards : []
+        }
     }
 
     render() {
         return (
             <div>
-                <ResultsList />
+                <ResultsList cards={this.props.cards} />
             </div>
         )
     }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            cards:nextProps.cards
+        })
+    }
 }
+
+
 
 export default SearchPage

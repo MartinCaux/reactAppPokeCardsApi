@@ -2,18 +2,19 @@ import React from 'react'
 
 class Result extends React.Component {
     constructor(props) {
-        super()
+        super(props)
+        
     }
 
     render() {
         return(
-            <div className="itemClass">
-                <img src={this.props.icone} alt="Image du pokémon" />
-                <div>
-                    <p>{this.props.pokeName} - {this.props.pokeType} </p>
-                    <p>{this.props.pokeGeneration}</p>
+            <li className="itemClass">
+                <img className="itemImg" src={this.props.url} alt="Image du pokémon" />
+                <div className="itemDescription">
+                    <p>{this.props.name}</p>
+                    <p>{this.props.description}</p>
                 </div> 
-            </div>
+            </li>
         )
     }
 }
