@@ -3,10 +3,6 @@ header {
 }
 
 .App {
-  /*display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;  */
   background-color: #282c34;
   text-align: center;
   position: relative;
@@ -30,7 +26,9 @@ header {
 
 .listContainer {
   margin:auto;
-  background-color: #282c34;  
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: #282c34;
   font-size: calc(10px + 2vmin);
   color: white;
   width:60%;
@@ -40,31 +38,18 @@ header {
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 #root {
   height :100%;
   background-color: #282c34;
 }
 
-.itemClass {
-  display:flex;
-  justify-content: left;
-  align-items: center;
-  width:100%;
-}
-
 .itemImg {
   padding-left:10px;
   padding-right:10px;
-  width:15%;  
+  padding-top:10px;
+  padding-bottom:10px;
+  justify-content: center;
+  vertical-align: middle;
 }
 
 .itemDescription {
@@ -78,12 +63,55 @@ header {
 }
 
 ul {
-  list-style-type: none;  
+  list-style-type: none;
 }
 
-li {
-  border:solid 2px white;
-  padding-left: 10px;
-  padding-right:10px;
+button {
+  text-decoration: none;
+  display: inline-block;
+  padding: 8px 16px;
 }
 
+.buttonContainer {
+  color: white;
+}
+
+button:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.previous {
+  background-color: #f1f1f1;
+  color: black;
+  margin-right: 10px;
+}
+
+.next {
+  background-color: #f1f1f1;
+  color: black;
+  margin-left: 10px;
+}
+
+.tableClass {
+  margin:auto;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  background-color: #282c34;
+  text-align: center;
+  position: relative;
+  color:white;
+}
+
+
+table {
+  margin:auto;
+  margin-top:50px;
+  width:60%;
+  border-collapse: collapse;
+}
+
+tr, td {
+  border:1px solid black;
+  height:30px;
+}

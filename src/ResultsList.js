@@ -1,7 +1,5 @@
 import React from 'react'
-import Result from './Result';
-import florizarre from './florizarre.png';
-import pikachu from './pikachu.png';
+import ResultItem from './ResultItem';
 
 class ResultsList extends React.Component {
     constructor(props) {
@@ -13,20 +11,20 @@ class ResultsList extends React.Component {
 
     render() {
         return(
-            <ul>
-                {this.state.cards != [] ? this.state.cards.map(element => (
-                        <Result name={element.name} url={element.imageUrl} description={element.text} />
-                    )) : null }    
-            </ul>
+          <div className="listContainer" >
+                {this.state.cards !== [] ? this.state.cards.map(element => (
+                        <ResultItem key={element.id} id={element.id} name={element.name} url={element.imageUrl} description={element.text} />
+                    )) : null }
+              </div>
         )
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps)
         this.setState({
-            cards:nextProps.cards.cards
+            cards:nextProps.cards
         })
     }
+
 
 }
 
