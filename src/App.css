@@ -3,7 +3,6 @@ header {
 }
 
 .App {
-  background-color: #282c34;
   text-align: center;
   position: relative;
 }
@@ -14,21 +13,18 @@ header {
 }
 
 .App-header {
-  background-color: #282c34;
   min-height: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .listContainer {
   margin:auto;
   margin-top: 20px;
   margin-bottom: 20px;
-  background-color: #282c34;
   font-size: calc(10px + 2vmin);
   color: white;
   width:60%;
@@ -40,7 +36,6 @@ header {
 
 #root {
   height :100%;
-  background-color: #282c34;
 }
 
 .itemImg {
@@ -73,7 +68,6 @@ button {
 }
 
 .buttonContainer {
-  color: white;
 }
 
 button:hover {
@@ -97,10 +91,8 @@ button:hover {
   margin:auto;
   padding-top: 100px;
   padding-bottom: 100px;
-  background-color: #282c34;
   text-align: center;
   position: relative;
-  color:white;
 }
 
 

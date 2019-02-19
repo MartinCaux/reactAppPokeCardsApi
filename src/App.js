@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SearchPage from './SearchPage';
 import './App.css';
+import {withRouter} from 'react-router';
 
 function Search(props) {
   return (
@@ -12,10 +13,13 @@ function Search(props) {
         placeholder="Entrez votre recherche"
       />
       &emsp;
-      {props.nbItem}
+      {props.nbItem > 1 ?
+      `${props.nbItem} resultats` :
+      `${props.nbItem} resultat`
+      }
 
     </div>
-  );
+  )
 }
 
 function NavigationBar(props) {
@@ -31,22 +35,17 @@ function NavigationBar(props) {
 }
 
 
-
-function PageNumber(props) {
-  return
-}
-
 class App extends Component {
 
   constructor(props) {
     super(props)
     this.state={
-      myInputValue : "",
       cards: [],
       currentPage: 1,
       itemCount: 0,
       nbPage: 0,
-      pokemonName: ""
+      pokemonName: props.match.params.cardName !== undefined ? props.match.params.cardName.toLowerCase() : "",
+      pokemonExactName: props.match.params.cardName !== undefined ? props.match.params.cardName.toLowerCase() : ""
     }
   }
 
@@ -55,7 +54,7 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <Search value={this.state.pokemonName} onChange={this.handleNameChange} nbItem={this.state.itemCount}/>
-        </header>
+          </header>
 
           <NavigationBar
           currentPage={this.state.currentPage}
@@ -64,32 +63,36 @@ class App extends Component {
           nextPage={this.nextPage.bind(this)}
           lastPage={this.lastPage.bind(this)}
           />
-
-
-
           <SearchPage cards={this.state.cards} />
 
-          <NavigationBar
-            currentPage={this.state.currentPage}
-            firstPage={this.firstPage.bind(this)}
-            previousPage={this.previousPage.bind(this)}
-            nextPage={this.nextPage.bind(this)}
-            lastPage={this.lastPage.bind(this)}
-          />
+          {this.state.cards.length !== 0
+            ?
+              <div>
+
+              <NavigationBar
+                currentPage={this.state.currentPage}
+                firstPage={this.firstPage.bind(this)}
+                previousPage={this.previousPage.bind(this)}
+                nextPage={this.nextPage.bind(this)}
+                lastPage={this.lastPage.bind(this)}
+              />
+              </div>
+            :
+              <p>No Result</p>
+          }
+
 
             <br/>
       </div>
-    );
+    )
   }
 
-  onSearch = (event) => {
-    this.setState({myInputValue : event.target.value})
-
-    // Méthode pour filtrer en fonction du nom du pokémon
-  }
 
   handleNameChange = pokemonName => {
-    this.setState({ pokemonName });
+    if (this.props.match.params.cardName !== "") {
+      this.props.history.push('/index')
+    }
+    this.setState({ pokemonName, pokemonExactName: "" });
   };
 
   firstPage = () => {
@@ -118,7 +121,11 @@ class App extends Component {
   }
 
   fetchData = (currentPage) => {
-    let request = new Request(`https://api.pokemontcg.io/v1/cards?page=${currentPage}&pageSize=32&name=${this.state.pokemonName}`);
+    let request = null
+    this.state.pokemonExactName !== "" ?
+    request = new Request(`https://api.pokemontcg.io/v1/cards?page=${currentPage}&pageSize=32&name="${this.state.pokemonExactName}"`)
+    :
+    request = new Request(`https://api.pokemontcg.io/v1/cards?page=${currentPage}&pageSize=32&name=${this.state.pokemonName}`)
 
     fetch(request, )
     .then(results => {
@@ -146,4 +153,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);

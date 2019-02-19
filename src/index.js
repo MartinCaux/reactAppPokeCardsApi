@@ -4,13 +4,13 @@ import './index.css';
 import App from './App';
 import DetailsPage from './DetailsPage';
 import * as serviceWorker from './serviceWorker';
-import { BrowserRouter, Route, Link, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 ReactDOM.render(
 
   <BrowserRouter>
     <Switch>
-      <Route path='/index' component={App}/>
+      <Route path='/index/:cardName' component={App}/>
       <Route path='/details/:cardId' component={DetailsPage}/>
       <Route path='/' component={App}/>
     </Switch>
