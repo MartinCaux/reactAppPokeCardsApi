@@ -95,6 +95,12 @@ class DetailsPage extends React.Component {
                               </td>
                           </tr> : null
                         }
+                        {this.state.cards[0].ability !== undefined ?
+                          <tr>
+                              <td>Ability</td>
+                              <p> <b>{`${this.state.cards[0].ability.name} | `}</b>  {this.state.cards[0].ability.type}<br/>{this.state.cards[0].ability.text}</p>
+                          </tr> : null
+                        }
                         {this.state.cards[0].set !== undefined ?
                           <tr>
                               <td>Set</td>
