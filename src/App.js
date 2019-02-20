@@ -89,7 +89,7 @@ class App extends Component {
 
 
   handleNameChange = pokemonName => {
-    if (this.props.match.params.cardName !== "") {
+    if (this.state.pokemonExactName !== "") {
       this.props.history.push('/index')
     }
     this.setState({ pokemonName, pokemonExactName: "" });

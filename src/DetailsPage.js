@@ -16,7 +16,7 @@ class DetailsPage extends React.Component {
                 { this.state.cards.length !== 0
                 ?
                 <div>
-                    <img className="itemImg" src={this.state.cards[0].imageUrl} alt="" />
+                    <img className="itemImg" src={this.state.cards[0].imageUrlHiRes} alt="" />
                     <p>{this.state.text}</p>
 
                     <table>
