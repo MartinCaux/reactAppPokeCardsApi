@@ -1,126 +1,128 @@
 import React from 'react'
-import {Link} from "react-router-dom";
 
 class DetailsPage extends React.Component {
     constructor(props) {
         super(props)
         this.fetchDetails(props.match.params.cardId)
         this.state = {
-            cards: []
+            card: null
         }
     }
 
     render() {
         return (
             <div className="tableClass">
-                { this.state.cards.length !== 0
+                { this.state.card !== null
                 ?
-                <div>
-                    <img className="itemImg" src={this.state.cards[0].imageUrlHiRes} alt="" />
-                    <p>{this.state.text}</p>
+                <div className="pokemonInformations">
+            
+                  <div>
+                    <img className="imgDetail" src={this.state.card.imageUrlHiRes} alt="" />
+                  </div>
 
-                    <table>
-                    <tbody>
-                        <tr>
-                            <th colSpan="2">Card Informations</th>
-                        </tr>
-                        {this.state.cards[0].name !== undefined ?
-                          <tr>
-                              <td>Name</td>
-                              <td>{this.state.cards[0].name}</td>
-                          </tr> : null
-                        }
-                        {this.state.cards[0].supertype !== undefined ?
-                          <tr>
-                              <td>Card Type</td>
-                              <td>{this.state.cards[0].supertype}
-                              {this.state.cards[0].subtype !== undefined ?
-                                ` - ${this.state.cards[0].subtype}` : null
-                              }</td>
-                          </tr> : null
-                        }
-                        {this.state.cards[0].hp !== "None" ?
-                          <tr>
-                              <td>Health Points</td>
-                              <td>{`${this.state.cards[0].hp} hp`}</td>
-                          </tr> : null
-                        }
-                        {this.state.cards[0].types !== undefined ?
-                          <tr>
-                          <td>Type</td>
-                          <td>{this.state.cards[0].types}</td>
-                          </tr> : null
-                        }
-                        {this.state.cards[0].evolvesFrom !== undefined ?
-                          <tr>
-                          <td>Evolves from</td>
-                          <td><Link className="itemImg" to={`/index/${ this.state.cards[0].evolvesFrom}`}>
-                            {this.state.cards[0].evolvesFrom}
-                          </Link></td>
+                  <div>
+                    <div className="cardName">
+                      <p><span className="nameChanges">{this.state.card.name}</span></p>
+                      <p>{this.state.card.supertype} - {this.state.card.subtype}  {this.state.card.types !== undefined && `| ${this.state.card.types}`  }</p>
+                      <p>{this.state.card.hp} HP</p>
+                    </div>
+                      
+                    {this.state.card.ability !== undefined &&
+                          <div>
+                            <p><span className="infoChanges">{`${this.state.card.ability.name}`}</span> - {this.state.card.ability.type}</p>
+                            <p>{this.state.card.ability.text}</p>
+                          </div>
+                             
+                    }
 
-                          </tr> : null
-                        }
-                        {this.state.cards[0].nationalPokedexNumber !== undefined ?
-                          <tr>
-                              <td>Pokedex Number</td>
-                              <td>{this.state.cards[0].nationalPokedexNumber}</td>
-                          </tr> : null
-                        }
-                        {this.state.cards[0].attacks !== undefined ?
-                          <tr>
-                              <td>Attacks</td>
-                              <td>{this.state.cards[0].attacks.map(attack => (
-                                          <p key={attack.name}> <b>{attack.name}</b> {attack.damage !== "" ?
-                                          <text><b>|</b>  {attack.damage} damage </text> : null}<br/>{attack.text}</p>
-                                      ))}
-                              </td>
-                          </tr> : null
-                        }
-                        {this.state.cards[0].weaknesses !== undefined ?
-                          <tr>
-                              <td>Weaknesses</td>
-                              <td>{this.state.cards[0].weaknesses.map(weakness => (
-                                    <p key={weakness.type}> <b>{weakness.type} </b>{weakness.value}</p>
-                                  ))}
-                              </td>
-                          </tr> : null
-                        }
+                    {this.state.card.text !== undefined ?
+                          <div>
+                            <p><span className="infoChanges">Rules</span></p>
+                            <p>{this.state.card.text}</p>
+                          </div>
+                             : null
+                    }
+                    
+                    <div className="attacks">
+                      {this.state.card.attacks !== undefined &&
+                            this.state.card.attacks.map(attack => (
+                        <div className="attack" key={attack.name}>
+                              <p > <span className="infoChanges">{attack.name}</span> - {attack.cost} {attack.damage !== "" &&
+                              <span><span className="infoChanges">|</span> {attack.damage} damage</span>  }<br/>{attack.text}</p>
+                        </div>
+                              ))
+                      }
+                    </div>
 
-                        {this.state.cards[0].resistances !== undefined ?
-                          <tr>
-                              <td>Resistances</td>
-                              <td>{this.state.cards[0].resistances.map(resistance => (
-                                    <p key={resistance.type}> <b>{resistance.type} </b>{resistance.value}</p>
-                                  ))}
-                              </td>
-                          </tr> : null
+                    <div className="weakness-resistance-retreat">
+                      <div className="box">
+                          {this.state.card.weaknesses !== undefined &&
+                            <div className="elementWeaknessResistanceRetreat">
+                                <span><span className="infoChanges">Weaknesses </span><br/>
+                                {this.state.card.weaknesses.map(weakness => (
+                                      <p key={weakness.type}> {weakness.type} {weakness.value}</p>
+                                    ))}
+                                </span>
+                            </div>
+                          }
+                      </div>
+
+                      <div className="box">
+                          {this.state.card.resistances !== undefined &&
+                            <div className="elementWeaknessResistanceRetreat">
+                                <span><span className="infoChanges">Resistances </span><br/>
+                                {this.state.card.resistances.map(resistance => (
+                                      <p key={resistance.type}>{resistance.type} {resistance.value}</p>
+                                    ))}
+                                </span>
+                            </div>
+                          }
+                      </div>
+                    
+                      <div className="box">
+                          {this.state.card.retreatCost !== undefined &&
+                            <div className="elementWeaknessResistanceRetreat">
+                                <span><span className="infoChanges">Retreat </span><br/>
+                                  <p>{this.state.card.retreatCost}</p>
+                                </span>
+                            </div>
+                          }
+                      </div>
+                    </div>
+
+                    <div className="artist-rarity-set">
+                      <div className="box">
+                        {this.state.card.artist !== undefined &&
+                          <div className="elementArtistRaritySet">
+                              <span><span className="infoChanges">Artist </span><br/>
+                                <p>{this.state.card.artist}</p>
+                              </span>
+                          </div>
                         }
-                        {this.state.cards[0].ability !== undefined ?
-                          <tr>
-                              <td>Ability</td>
-                              <p> <b>{`${this.state.cards[0].ability.name} | `}</b>  {this.state.cards[0].ability.type}<br/>{this.state.cards[0].ability.text}</p>
-                          </tr> : null
+                      </div>
+
+                      <div className="box">
+                        {this.state.card.rarity !== undefined &&
+                          <div className="elementArtistRaritySet">
+                              <span><span className="infoChanges">Rarity </span><br/>
+                                <p> {this.state.card.rarity}</p>
+                              </span>
+                          </div>
                         }
-                        {this.state.cards[0].set !== undefined ?
-                          <tr>
-                              <td>Set</td>
-                              <td>{this.state.cards[0].set}</td>
-                          </tr> : null
+                      </div>
+
+                      <div className="box">
+                        {this.state.card.set !== undefined &&
+                          <div className="elementArtistRaritySet">
+                            <span><span className="infoChanges">Set </span><br/>
+                            <p>{this.state.card.set}</p>
+                            </span>
+                          </div>
                         }
-                        {this.state.cards[0].rarity !== undefined ?
-                          <tr>
-                              <td>Rarity</td>
-                              <td>{this.state.cards[0].rarity}</td>
-                          </tr> : null
-                        }
-                        {this.state.cards[0].artist !== undefined ?
-                          <tr>
-                              <td>Artist</td>
-                              <td>{this.state.cards[0].artist}</td>
-                          </tr> : null
-                        }
-                    </tbody>
-                    </table>
+                      </div>
+                     
+                    </div>
+                  </div>
                 </div>
                 : null
                 }
@@ -137,7 +139,7 @@ class DetailsPage extends React.Component {
         .then(results => {
             return results.json()
         }).then(data => {
-            this.setState({cards:data.cards})
+            this.setState({card:data.cards[0]})
         })
     }
 

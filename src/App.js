@@ -2,21 +2,25 @@ import React, { Component } from 'react';
 import SearchPage from './SearchPage';
 import './App.css';
 import {withRouter} from 'react-router';
+import Store from './Store';
 
 function Search(props) {
   return (
-    <div>
+    <div className="bar">
           <input
-        className="searchBar"
+        type="text"
         value={props.value}
         onChange={event => props.onChange(event.target.value)}
         placeholder="Entrez votre recherche"
       />
-      &emsp;
-      {props.nbItem > 1 ?
-      `${props.nbItem} resultats` :
-      `${props.nbItem} resultat`
-      }
+      <br />
+      <span className="spanResult">
+        {props.nbItem > 1 ?
+          `${props.nbItem} results found`
+        :
+          `${props.nbItem} result found`
+        }
+      </span>
 
     </div>
   )
@@ -25,11 +29,34 @@ function Search(props) {
 function NavigationBar(props) {
   return (
     <div className="buttonContainer">
-    <button onClick={props.firstPage} className="previous">&#8249;&#8249;</button>
-    <button onClick={props.previousPage} className="previous">&#8249;</button>
-        {props.currentPage}
-    <button onClick={props.nextPage} className="next">&#8250;</button>
-    <button onClick={props.lastPage} className="next">&#8250;&#8250;</button>
+        <div>
+          {props.currentPage === 1 ? 
+          <button onClick={props.firstPage} className="previous" disabled>&#8249;&#8249;</button>
+          : 
+          <button onClick={props.firstPage} className="previous">&#8249;&#8249;</button>
+          }
+          {props.currentPage === 1 ? 
+          <button onClick={props.previousPage} className="previous" disabled>&#8249;</button>
+          : 
+          <button onClick={props.previousPage} className="previous">&#8249;</button>
+          }
+        </div>
+
+        <span className="currentPage">{props.currentPage}</span>
+        <div>
+          {props.currentPage === props.nbPage ? 
+          <button onClick={props.nextPage} className="next" disabled>&#8250;</button> 
+          : 
+          <button  onClick={props.nextPage} className="next" >&#8250;</button>
+          }
+          {props.currentPage === props.nbPage ? 
+          <button onClick={props.lastPage} className="next" disabled>&#8250;&#8250;</button>
+          : 
+          <button onClick={props.lastPage} className="next">&#8250;&#8250;</button>
+          }
+        </div>
+    
+   
     </div>
   )
 }
@@ -41,10 +68,10 @@ class App extends Component {
     super(props)
     this.state={
       cards: [],
-      currentPage: 1,
+      currentPage: Store.currentPage,
       itemCount: 0,
       nbPage: 0,
-      pokemonName: props.match.params.cardName !== undefined ? props.match.params.cardName.toLowerCase() : "",
+      pokemonName: props.match.params.cardName !== undefined ? props.match.params.cardName.toLowerCase() : Store.pokemonName,
       pokemonExactName: props.match.params.cardName !== undefined ? props.match.params.cardName.toLowerCase() : ""
     }
   }
@@ -57,11 +84,12 @@ class App extends Component {
           </header>
 
           <NavigationBar
-          currentPage={this.state.currentPage}
-          firstPage={this.firstPage.bind(this)}
-          previousPage={this.previousPage.bind(this)}
-          nextPage={this.nextPage.bind(this)}
-          lastPage={this.lastPage.bind(this)}
+            currentPage={this.state.currentPage}
+            firstPage={this.firstPage.bind(this)}
+            previousPage={this.previousPage.bind(this)}
+            nextPage={this.nextPage.bind(this)}
+            lastPage={this.lastPage.bind(this)}
+            nbPage={this.state.nbPage}
           />
           <SearchPage cards={this.state.cards} />
 
@@ -75,6 +103,7 @@ class App extends Component {
                 previousPage={this.previousPage.bind(this)}
                 nextPage={this.nextPage.bind(this)}
                 lastPage={this.lastPage.bind(this)}
+                nbPage={this.state.nbPage}
               />
               </div>
             :
@@ -89,6 +118,7 @@ class App extends Component {
 
 
   handleNameChange = pokemonName => {
+    Store.pokemonName = pokemonName
     if (this.state.pokemonExactName !== "") {
       this.props.history.push('/index')
     }
@@ -96,12 +126,18 @@ class App extends Component {
   };
 
   firstPage = () => {
-    this.fetchData(1)
+    let currentPage = this.state.currentPage
+    if(currentPage > 1) {
+      this.fetchData(1)
+    }
   }
 
 
   lastPage = () => {
-    this.fetchData(this.state.nbPage)
+    let currentPage = this.state.currentPage
+    if(currentPage < this.state.nbPage) {
+      this.fetchData(this.state.nbPage)
+    }
   }
 
   nextPage = () => {
@@ -136,13 +172,14 @@ class App extends Component {
     }).then(data => {
       this.setState({cards:data.cards})
     })
+    Store.currentPage = currentPage
     this.setState({currentPage})
 
   }
 
   // Fetch de l'api
   componentDidMount() {
-    this.fetchData(1)
+    this.fetchData(this.state.currentPage)
   }
 
 
